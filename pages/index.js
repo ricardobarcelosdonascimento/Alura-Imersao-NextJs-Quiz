@@ -1,14 +1,13 @@
-import styled from 'styled-components'
-import db from "../db.json"
-import Widget from "../src/components/Widget"
-import Footer from "../src/components/Footer"
-import GitHubCorner from "../src/components/GitHubCorner"
-import QuizBackground from "../src/components/QuizBackground"
-
-const Title = styled.h1`
-  font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
-`
+import styled from 'styled-components';
+import Head from 'next/head';
+import React from 'react';
+import { useRouter } from 'next/router';
+import db from '../db.json';
+import QuizLogo from '../src/components/QuizLogo';
+import Widget from '../src/components/Widget';
+import Footer from '../src/components/Footer';
+import GitHubCorner from '../src/components/GitHubCorner';
+import QuizBackground from '../src/components/QuizBackground';
 
 const QuizContainer = styled.div`
   width: 100%;
@@ -22,15 +21,39 @@ const QuizContainer = styled.div`
 `;
 
 export default function Home() {
+  const router = useRouter();
+  const [name, setName] = React.useState('');
+
   return (
     <QuizBackground backgroundImage={db.bg}>
+      <Head>
+        <title>AluraQuiz - Modelo Base</title>
+      </Head>
       <QuizContainer>
+        <QuizLogo />
         <Widget>
           <Widget.Header>
-            <h1>A Lenda dos Trones</h1>
+            <h1>{db.title}</h1>
           </Widget.Header>
-          <Widget.Content> 
-            <p>Ipson colors</p>
+          <Widget.Content>
+            <p>{db.description}</p>
+            <form onSubmit={function (event) {
+              event.preventDefault();
+              router.push(`/quiz?name=${name}`);
+              console.log('Submetendo o form');
+            }}
+            >
+              <input
+                onChange={function (event) {
+                  setName(event.target.value);
+                }}
+                placeHolder="Deixa aqui seu nome"
+              />
+              <button type="submit" disabled={name.length === 0}>
+                Jogar
+                {name}
+              </button>
+            </form>
           </Widget.Content>
         </Widget>
 
@@ -42,9 +65,9 @@ export default function Home() {
             <p>Ipson colors</p>
           </Widget.Content>
         </Widget>
-        <Footer/>
+        <Footer />
       </QuizContainer>
-      <GitHubCorner/>
+      <GitHubCorner projectUrl="http://dreamsky.com.br/vam/index.php?lang=ptbr" />
     </QuizBackground>
-  )
+  );
 }
