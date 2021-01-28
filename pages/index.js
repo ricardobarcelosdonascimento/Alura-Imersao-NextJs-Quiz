@@ -8,6 +8,8 @@ import Widget from '../src/components/Widget';
 import Footer from '../src/components/Footer';
 import GitHubCorner from '../src/components/GitHubCorner';
 import QuizBackground from '../src/components/QuizBackground';
+import Input from '../src/components/Input';
+import Button from '../src/components/Button';
 
 const QuizContainer = styled.div`
   width: 100%;
@@ -43,16 +45,15 @@ export default function Home() {
               console.log('Submetendo o form');
             }}
             >
-              <input
-                onChange={function (event) {
-                  setName(event.target.value);
-                }}
+              <Input
+                name="NomedoUsuario"
+                onChange={(event) => { setName(event.target.value); }}
                 placeHolder="Deixa aqui seu nome"
+                value={name}
               />
-              <button type="submit" disabled={name.length === 0}>
-                Jogar
-                {name}
-              </button>
+              <Button type="submit" disabled={name.length === 0}>
+                {`Jogar ${name}`}
+              </Button>
             </form>
           </Widget.Content>
         </Widget>
